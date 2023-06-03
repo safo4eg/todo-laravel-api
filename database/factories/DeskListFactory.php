@@ -17,7 +17,8 @@ class DeskListFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'name' => $this->faker->text(20),
+            'desk_id' => \App\Models\Desk::get()->random()->id
         ];
     }
 }

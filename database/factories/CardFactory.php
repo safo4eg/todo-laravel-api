@@ -17,7 +17,8 @@ class CardFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'name' => $this->faker->text(20),
+            'desk_list_id' => \App\Models\DeskList::get()->random()->id
         ];
     }
 }

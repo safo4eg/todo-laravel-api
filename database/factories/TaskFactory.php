@@ -17,7 +17,8 @@ class TaskFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'name' => $this->faker->text(20),
+            'card_id' => \App\Models\Card::get()->random()->id
         ];
     }
 }
