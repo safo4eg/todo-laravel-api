@@ -3,8 +3,12 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Models\Desk;
+use App\Http\Requests\DeskUpdateRequest;
 use Illuminate\Http\Request;
+use App\Models\Desk;
+use App\Http\Resources\DeskResources;
+use App\Http\Requests\DeskStoreRequest;
+use Illuminate\Http\Response;
 
 class DeskController extends Controller
 {
@@ -15,7 +19,7 @@ class DeskController extends Controller
      */
     public function index()
     {
-        return Desk::all();
+        return DeskResources::collection(Desk::all());
     }
 
     /**
@@ -24,9 +28,10 @@ class DeskController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(DeskStoreRequest $request)
     {
-        //
+        $desk = Desk::create($request->validated());
+        return new DeskResources($desk);
     }
 
     /**
@@ -37,7 +42,7 @@ class DeskController extends Controller
      */
     public function show(Desk $desk)
     {
-        return $desk;
+        return new DeskResources($desk);
     }
 
     /**
@@ -47,9 +52,10 @@ class DeskController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(DeskUpdateRequest $request, Desk $desk)
     {
-        //
+        $desk->update($request->validated());
+        return new DeskResources($desk);
     }
 
     /**
@@ -58,8 +64,9 @@ class DeskController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Desk $desk)
     {
-        //
+        $desk->delete();
+        return response(null, Response::HTTP_NO_CONTENT);
     }
 }
